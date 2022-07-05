@@ -1,0 +1,45 @@
+# 定义一个查询,用type Query，且整个文件只能用一次type Query，所有查询相关的操作都放到这里面
+type Query{
+    listEvents: [Event!]!  #表示操作名叫events，[String!]表示返回一个String类型的数组，!表示必填
+
+    listUser: [User!]!
+}
+
+#定义一个增删改,用type Mutation，且整个文件只能用一次type Mutation，所有增删改相关的操作都放到这里面
+type Mutation{
+    #表示操作名叫createEvent，Event表示返回一个Event类型的对象，(event: inputEvent)表示传入一个inputEvent类型的参数，名字叫event
+    #注意，传入参数类型除了基本数据类型，对象一般都要用下面的 input关键字来定义，而不是type
+    createEvent(event: inputEvent): String
+
+    createUser(user: inputUser): String
+}
+
+#注意以下用type、input定义的类型都需要在java中定义对应的类，如本项目的type包中的类
+input inputEvent{
+    title: String!
+    des: String!
+    price: Float! # graphql中的Float类型对应java中的Double类型
+    date: String!
+    creatorId: Int!
+}
+
+input inputUser{
+    email: String!
+    password: String!
+}
+
+#表示定义了一个类型叫Event，其中属性用 属性名:类型 定义,!表示如果有值必须返回即必填
+type Event{
+    id: ID !# graphql本身就支持ID类型
+    title: String!
+    des: String!
+    price: Float! # graphql中的Float类型对应java中的Double类型
+    date: String! # graphql本身不支持Date类型
+    creator: User!
+}
+
+type User{
+    id: ID!
+    email: String!
+    password: String!
+}
